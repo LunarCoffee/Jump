@@ -17,4 +17,4 @@ def test():
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8000"))
-    app.run(port=port)
+    app.run("0.0.0.0", port)
