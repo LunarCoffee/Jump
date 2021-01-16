@@ -1,0 +1,7 @@
+steps:
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  args: [ '-c', "gcloud secrets versions access latest --secret=opentok-key --format='get(payload.data)' | tr '_-' '/+' | base64 -d > opentok_key" ]
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  args: [ '-c', "gcloud secrets versions access latest --secret=opentok-secret --format='get(payload.data)' | tr '_-' '/+' | base64 -d > opentok_secret" ]
