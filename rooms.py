@@ -30,6 +30,10 @@ class Room:
         self.initiator_id = initiator_id
         self.archive = None
 
+        self.initiator_score = 0
+        self.opponent_score = 0
+        self.win_score = len(exercises)
+
 
 @rooms_routes.route("/rooms/create", methods=["POST"])
 def rooms_create_post():
@@ -66,6 +70,30 @@ def rooms_join_post():
     rooms[room_id].archive = archive
 
     return {"session_id": sid, "token": token}
+
+
+@rooms_routes.route("/rooms/update", methods=["POST"])
+def rooms_update_post():
+    data = request.get_json(force=True)
+    room_id = data["room_id"]
+    user_id = data["user_id"]
+
+    room = rooms[room_id]
+    if user_id == room.initiator_id:
+        room.initiator_score += 1
+    else:
+        room.opponent_score += 1
+
+    if room.initiator_score == room.win_score:
+        end_data = {"game_over": True, "winner_id": room.initiator_id}
+    elif room.opponent_score == room.win_score:
+        end_data = {"game_over": True, "winner_id": room.opponent_id}
+    else:
+        end_data = {"game_over": False, "winner_id": user_id}
+
+    payload = {"data": end_data}
+    api_opentok.signal(room.session.session_id, payload)
+    return "", 204
 
 
 @rooms_routes.route("/archives")
