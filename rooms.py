@@ -34,13 +34,17 @@ def rooms_create_post():
     initiator_id = data["user_id"]
 
     session = api_opentok.create_session(media_mode=opentok.MediaModes.routed, archive_mode=opentok.ArchiveModes.always)
+    token = session.generate_token(data=f"user={initiator_id}")
     exercises = random.sample(EXERCISES, k=len(EXERCISES))
 
     room = Room(session, exercises, initiator_id)
     room_id = ids.generate()
     rooms[room_id] = room
 
-    return {"room_id": room_id, "exercises": exercises}
+    return {"room_id": room_id,
+            "session_id": session.session_id,
+            "token": token,
+            "exercises": exercises}
 
 
 @rooms_routes.route("/rooms/join", methods=["POST"])
