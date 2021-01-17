@@ -16,7 +16,7 @@ print(OPENTOK_API_KEY, OPENTOK_API_SECRET)
 
 api_opentok = opentok.OpenTok(OPENTOK_API_KEY, OPENTOK_API_SECRET)
 
-EXERCISES = "squats,pushups,lunges,crunches".split(",")
+EXERCISES = "squats,push-ups,lunges,jumping jacks,sit-ups".split(",")
 rooms = {}
 
 
