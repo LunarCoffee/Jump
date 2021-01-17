@@ -15,7 +15,7 @@ OPENTOK_API_SECRET = "***REMOVED***"  # lol
 api_opentok = opentok.OpenTok(OPENTOK_API_KEY, OPENTOK_API_SECRET)
 
 EXERCISES = {
-    "quick": [[4, "squats"], [5, "lunges"], [8, "jumping jacks"]],
+    "quick": [[4, "squats"], [8, "jumping jacks"]],
     "core": [[30, "sit-ups"], [1, "plank"], [2, "side planks"]],
     "lower body": [[10, "squats"], [20, "lunges"], [30, "calf raises"], [20, "side lunges"]]
 }
