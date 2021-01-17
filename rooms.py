@@ -9,8 +9,8 @@ import ids
 
 rooms_routes = flask.Blueprint("rooms_routes", __name__)
 
-OPENTOK_API_KEY = "***REMOVED***"  # lol
-OPENTOK_API_SECRET = "***REMOVED***"  # lol
+OPENTOK_API_KEY = ""
+OPENTOK_API_SECRET = ""
 
 api_opentok = opentok.OpenTok(OPENTOK_API_KEY, OPENTOK_API_SECRET)
 
