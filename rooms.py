@@ -58,9 +58,9 @@ def rooms_join_post():
     token = session.generate_token(data=f"user={user_id}")
     sid = session.session_id
 
-    # archive_name = f"{room.initiator_id}-{user_id}_{time.time_ns()}"
-    # archive = api_opentok.start_archive(session.session_id, name=archive_name)
-    # rooms[room_id].archive = archive
+    archive_name = f"{room.initiator_id}-{user_id}_{time.time_ns()}"
+    archive = api_opentok.start_archive(session.session_id, name=archive_name)
+    rooms[room_id].archive = archive
 
     return {"session_id": sid, "token": token}
 
