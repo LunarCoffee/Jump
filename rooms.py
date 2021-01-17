@@ -9,8 +9,8 @@ import ids
 
 rooms_routes = flask.Blueprint("rooms_routes", __name__)
 
-OPENTOK_API_KEY = open("opentok_key").read()
-OPENTOK_API_SECRET = open("opentok_secret").read()
+OPENTOK_API_KEY = "***REMOVED***"  # lol
+OPENTOK_API_SECRET = "***REMOVED***"  # lol
 
 print(OPENTOK_API_KEY, OPENTOK_API_SECRET)
 
@@ -58,3 +58,19 @@ def rooms_join_post():
     rooms[room_id].archive = archive
 
     return {"session_id": sid, "token": token}
+
+
+@rooms_routes.route("/archives")
+def archives_get():
+    archives = api_opentok.list_archives()
+    return flask.jsonify([a.url for a in archives])
+
+
+@rooms_routes.route("/archives/<user_id>")
+def archives_user_id_get(user_id):
+    def is_for_user(name):
+        return user_id in name.split("-").split("_")[:2]
+
+    archives = api_opentok.list_archives()
+    user_archives = [a.url for a in archives if is_for_user(a.name)]
+    return flask.jsonify(user_archives)
