@@ -12,11 +12,14 @@ rooms_routes = flask.Blueprint("rooms_routes", __name__)
 OPENTOK_API_KEY = "***REMOVED***"  # lol
 OPENTOK_API_SECRET = "***REMOVED***"  # lol
 
-print(OPENTOK_API_KEY, OPENTOK_API_SECRET)
-
 api_opentok = opentok.OpenTok(OPENTOK_API_KEY, OPENTOK_API_SECRET)
 
-EXERCISES = "squats,push-ups,lunges,jumping jacks,sit-ups".split(",")
+EXERCISES = {
+    "quick": [[4, "squats"], [5, "lunges"], [8, "jumping jacks"]],
+    "core": [[30, "sit-ups"], [1, "plank"], [2, "side planks"]],
+    "lower body": [[10, "squats"], [20, "lunges"], [30, "calf raises"], [20, "side lunges"]]
+}
+
 rooms = {}
 
 
@@ -32,10 +35,10 @@ class Room:
 def rooms_create_post():
     data = request.get_json(force=True)
     initiator_id = data["user_id"]
+    exercises = EXERCISES.get(data["workout"].strip(), "null lunge")
 
-    session = api_opentok.create_session(media_mode=opentok.MediaModes.routed, archive_mode=opentok.ArchiveModes.always)
+    session = api_opentok.create_session(media_mode=opentok.MediaModes.routed)
     token = session.generate_token(data=f"user={initiator_id}")
-    exercises = random.sample(EXERCISES, k=len(EXERCISES))
 
     room = Room(session, exercises, initiator_id)
     room_id = ids.generate()
